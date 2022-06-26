@@ -3,7 +3,17 @@ const { parseRequest } = require('./parser.js');
 const { Response } = require('./response.js');
 
 const currecyEquivalents = {
-  'USD': 0.013
+  'USD': 0.013,
+  'CAD': 0.016,
+  'EUR': 0.012,
+  'JPY': 1.73,
+  'AUD': 0.018
+};
+
+const html = (content) => {
+  const styles = 'color:red;text-align:center';
+  const contentPara = `<h2 style="${styles}">${content}</h2>`;
+  return `<html><body>${contentPara}<body></html>`;
 };
 
 const currencyConverter = ({ uri, params }, response) => {
@@ -14,7 +24,8 @@ const currencyConverter = ({ uri, params }, response) => {
 
   if (uri === '/convert') {
     const { amount, type } = params;
-    response.send(`${amount} INR = ${currecyEquivalents[type]} ${type}`);
+    const equivalent = +amount * currecyEquivalents[type];
+    response.send(html(`${amount} INR = ${equivalent} ${type} `));
   }
 };
 
