@@ -1,3 +1,4 @@
+const fs = require('fs');
 const { parseRequest } = require('./parser.js');
 const { Response } = require('./response.js');
 
@@ -6,6 +7,11 @@ const currecyEquivalents = {
 };
 
 const currencyConverter = ({ uri, params }, response) => {
+  if (uri === '/') {
+    const content = fs.readFileSync('./src/form.html');
+    response.send(content);
+  }
+
   if (uri === '/convert') {
     const { amount, type } = params;
     response.send(`${amount} INR = ${currecyEquivalents[type]} ${type}`);
